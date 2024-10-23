@@ -1,0 +1,12 @@
+﻿using UnityEngine;
+using ScriptableObjectArchitecture;
+
+namespace $NAMESPACE$
+{
+	[System.Serializable]
+	public sealed class $TYPE_NAME$LocalReference : BaseLocalReference<$TYPE$, $TYPE_NAME$Variable>
+	{
+	    public $TYPE_NAME$LocalReference() : base() { }
+	    public $TYPE_NAME$LocalReference($TYPE$ value) : base(value) { }
+	}
+}

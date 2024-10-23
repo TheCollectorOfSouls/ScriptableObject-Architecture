@@ -13,7 +13,7 @@ namespace ScriptableObjectArchitecture
         public abstract object BaseValue { get; set; }
         public abstract bool UseDefaultValue { get; }
     }
-    public abstract class BaseVariable<T> : BaseVariable
+    public abstract partial class BaseVariable<T> : BaseVariable
     {
         public virtual T Value
         {
@@ -98,7 +98,7 @@ namespace ScriptableObjectArchitecture
         protected T _maxClampedValue = default(T);
         [SerializeField]
         protected T _defaultValue;
-        
+
         private T _oldValue;
 
         public virtual T SetValue(BaseVariable<T> value)

@@ -14,6 +14,7 @@ namespace ScriptableObjectArchitecture.Editor
          * [5] Unity Event
          * [6] Variable
          *
+         * [7] Local Reference (Custom)
          * /  1  2  3  4  5  6  7
          * 1     X        X
          * 2        X
@@ -25,12 +26,13 @@ namespace ScriptableObjectArchitecture.Editor
 
         private readonly bool[,] _dependencyGraph = new bool[SO_CodeGenerator.TYPE_COUNT, SO_CodeGenerator.TYPE_COUNT]
         {
-            { false, true, false, false, true, false, },
-            { false, false, true, false, false, false, },
-            { false, false, false, false, false, true, },
-            { false, false, false, false, false, false, },
-            { false, false, false, false, false, false, },
-            { false, false, false, false, false, false, },
+            { false, true, false, false, true, false,/**/ false },
+            { false, false, true, false, false, false,/**/ false},
+            { false, false, false, false, false, true,/**/ false},
+            { false, false, false, false, false, false,/**/ false},
+            { false, false, false, false, false, false,/**/ false},
+            { false, false, false, false, false, false,/**/ false},
+            { false, false, false, false, false, true,/**/ false},
         };
 
         private readonly bool[] _states = new bool[SO_CodeGenerator.TYPE_COUNT];
@@ -42,11 +44,13 @@ namespace ScriptableObjectArchitecture.Editor
             "Collection",
             "Unity Event",
             "Variable",
+
+            "Local Reference",
         };
 
         private readonly bool[] _menuRequirement = new bool[SO_CodeGenerator.TYPE_COUNT]
         {
-            false, true, false, true, false, true
+            false, true, false, true, false, true, false
         };
 
         private int _order;

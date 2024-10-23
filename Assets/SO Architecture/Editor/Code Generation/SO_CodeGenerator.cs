@@ -23,6 +23,8 @@ namespace ScriptableObjectArchitecture.Editor
                 Application.dataPath + "/" + SOArchitecture_Settings.Instance.CodeGenerationTargetDirectory + "/Collections",
                 Application.dataPath + "/" + SOArchitecture_Settings.Instance.CodeGenerationTargetDirectory + "/Events/Responses",
                 Application.dataPath + "/" + SOArchitecture_Settings.Instance.CodeGenerationTargetDirectory + "/Variables",
+
+                Application.dataPath + "/" + SOArchitecture_Settings.Instance.CodeGenerationTargetDirectory + "/LocalReferences",
             };
         }
         private static void GatherFilePaths()
@@ -63,7 +65,7 @@ namespace ScriptableObjectArchitecture.Editor
             }
         }
 
-        public const int TYPE_COUNT = 6;
+        public const int TYPE_COUNT = 7;
 
         public struct Data
         {
@@ -82,6 +84,8 @@ namespace ScriptableObjectArchitecture.Editor
             "CollectionTemplate",
             "UnityEventTemplate",
             "VariableTemplate",
+
+            "LocalReferenceTemplate",
         };
 
         private static string[] _targetFileNames = new string[TYPE_COUNT]
@@ -92,6 +96,7 @@ namespace ScriptableObjectArchitecture.Editor
             "{0}Collection.cs",
             "{0}UnityEvent.cs",
             "{0}Variable.cs",
+            "{0}LocalReference.cs",
         };
 
         private static string[] _targetDirectories = null;

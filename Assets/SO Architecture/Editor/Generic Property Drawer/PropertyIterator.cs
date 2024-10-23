@@ -19,7 +19,9 @@ namespace ScriptableObjectArchitecture.Editor
         protected readonly SerializedProperty iterator;
         protected readonly SerializedProperty endProperty;
 
+#pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool consumeChildren;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
         private int parentDepth;
 
         public virtual bool Next()

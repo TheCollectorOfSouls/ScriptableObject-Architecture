@@ -3,7 +3,7 @@
 namespace ScriptableObjectArchitecture
 {
     [System.Serializable]
-    public class BaseReference<TBase, TVariable> : BaseReference where TVariable : BaseVariable<TBase>
+    public partial class BaseReference<TBase, TVariable> : BaseReference where TVariable : BaseVariable<TBase>
     {
         public BaseReference() { }
         public BaseReference(TBase baseValue)
@@ -29,25 +29,25 @@ namespace ScriptableObjectArchitecture
             }
         }
 
-        public TBase Value
-        {
-            get
-            {
-                return (_useConstant || _variable == null) ? _constantValue : _variable.Value;
-            }
-            set
-            {
-                if (!_useConstant && _variable != null)
-                {
-                    _variable.Value = value;
-                }
-                else
-                {
-                    _useConstant = true;
-                    _constantValue = value;
-                }
-            }
-        }
+        // public TBase Value
+        // {
+        //     get
+        //     {
+        //         return (_useConstant || _variable == null) ? _constantValue : _variable.Value;
+        //     }
+        //     set
+        //     {
+        //         if (!_useConstant && _variable != null)
+        //         {
+        //             _variable.Value = value;
+        //         }
+        //         else
+        //         {
+        //             _useConstant = true;
+        //             _constantValue = value;
+        //         }
+        //     }
+        // }
         public bool IsValueDefined
         {
             get
@@ -65,26 +65,26 @@ namespace ScriptableObjectArchitecture
 
             return copy;
         }
-        public void AddListener(IGameEventListener listener)
-        {
-            if (_variable != null)
-                _variable.AddListener(listener);
-        }
-        public void RemoveListener(IGameEventListener listener)
-        {
-            if (_variable != null)
-                _variable.RemoveListener(listener);
-        }
-        public void AddListener(System.Action action)
-        {
-            if (_variable != null)
-                _variable.AddListener(action);
-        }
-        public void RemoveListener(System.Action action)
-        {
-            if (_variable != null)
-                _variable.RemoveListener(action);
-        }
+        // public void AddListener(IGameEventListener listener)
+        // {
+        //     if (_variable != null)
+        //         _variable.AddListener(listener);
+        // }
+        // public void RemoveListener(IGameEventListener listener)
+        // {
+        //     if (_variable != null)
+        //         _variable.RemoveListener(listener);
+        // }
+        // public void AddListener(System.Action action)
+        // {
+        //     if (_variable != null)
+        //         _variable.AddListener(action);
+        // }
+        // public void RemoveListener(System.Action action)
+        // {
+        //     if (_variable != null)
+        //         _variable.RemoveListener(action);
+        // }
         public override string ToString()
         {
             return Value.ToString();
@@ -92,5 +92,5 @@ namespace ScriptableObjectArchitecture
     }
 
     //Can't get property drawer to work with generic arguments
-    public abstract class BaseReference { } 
+    public abstract class BaseReference { }
 }
