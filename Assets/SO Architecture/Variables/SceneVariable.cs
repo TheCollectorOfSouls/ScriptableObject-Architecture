@@ -75,9 +75,21 @@ namespace ScriptableObjectArchitecture
         }
 
         #if UNITY_EDITOR
+        private UnityEditor.SceneAsset _cacheScene;
         internal UnityEditor.SceneAsset Scene
         {
-            get { return UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(_sceneName); }
+            get {
+                try
+                {
+                    var scene = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(_sceneName);
+                    _cacheScene = scene;
+                    return _cacheScene;
+                }
+                catch (Exception)
+                {
+                    return _cacheScene;
+                }
+            }
         }
         #endif
 
