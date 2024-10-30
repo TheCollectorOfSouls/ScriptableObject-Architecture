@@ -5,19 +5,19 @@ using UnityEngine;
 
 namespace ScriptableObjectArchitecture
 {
-    public class Collection<T> : BaseCollection, IEnumerable<T>
+    public partial class Collection<T> : BaseCollection, IEnumerable<T>
     {
-        public new T this[int index]
-        {
-            get
-            {
-                return _list[index];
-            }
-            set
-            {
-                _list[index] = value;
-            }
-        }
+        // public new T this[int index]
+        // {
+        //     get
+        //     {
+        //         return _list[index];
+        //     }
+        //     set
+        //     {
+        //         _list[index] = value;
+        //     }
+        // }
 
         [SerializeField]
         private List<T> _list = new List<T>();
@@ -37,19 +37,19 @@ namespace ScriptableObjectArchitecture
             }
         }
 
-        public void Add(T obj)
-        {
-            _list.Add(obj);
-        }
-        public void Remove(T obj)
-        {
-            if (_list.Contains(obj))
-                _list.Remove(obj);
-        }
-        public void Clear()
-        {
-            _list.Clear();
-        }
+        // public void Add(T obj)
+        // {
+        //     _list.Add(obj);
+        // }
+        // public void Remove(T obj)
+        // {
+        //     if (_list.Contains(obj))
+        //         _list.Remove(obj);
+        // }
+        // public void Clear()
+        // {
+        //     _list.Clear();
+        // }
         public bool Contains(T value)
         {
             return _list.Contains(value);
@@ -58,14 +58,14 @@ namespace ScriptableObjectArchitecture
         {
             return _list.IndexOf(value);
         }
-        public void RemoveAt(int index)
-        {
-            _list.RemoveAt(index);
-        }
-        public void Insert(int index, T value)
-        {
-            _list.Insert(index, value);
-        }
+        // public void RemoveAt(int index)
+        // {
+        //     _list.RemoveAt(index);
+        // }
+        // public void Insert(int index, T value)
+        // {
+        //     _list.Insert(index, value);
+        // }
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -81,5 +81,5 @@ namespace ScriptableObjectArchitecture
         public T[] ToArray() {
             return _list.ToArray();
         }
-    } 
+    }
 }

@@ -8,8 +8,6 @@ namespace ScriptableObjectArchitecture
     public partial class BaseReference<TBase, TVariable> : BaseReference where TVariable : BaseVariable<TBase>
     {
         protected TBase _oldConstantValue;
-        protected readonly List<Action> _actions = new List<Action>();
-        protected readonly List<IGameEventListener> _listeners = new List<IGameEventListener>();
 
         public virtual TBase Value
         {
@@ -45,6 +43,16 @@ namespace ScriptableObjectArchitecture
             return newValue;
         }
 
+        public virtual BaseReference CreateCopy()
+        {
+            BaseReference<TBase, TVariable> copy = (BaseReference<TBase, TVariable>)System.Activator.CreateInstance(GetType());
+            copy._useConstant = _useConstant;
+            copy._constantValue = _constantValue;
+            copy._variable = _variable;
+
+            return copy;
+        }
+
         protected virtual bool AreValuesEqual(TBase a, TBase b)
         {
             if (a != null) return a.Equals(b);
@@ -52,63 +60,46 @@ namespace ScriptableObjectArchitecture
             return b == null;
         }
 
-        public virtual void Raise()
-        {
-            for (int i = _listeners.Count - 1; i >= 0; i--)
-                _listeners[i].OnEventRaised();
-
-            for (int i = _actions.Count - 1; i >= 0; i--)
-                _actions[i]();
-        }
-
-        public virtual void AddListener(IGameEventListener listener)
+        public override void AddListener(IGameEventListener listener)
         {
             if (_variable != null && !_useConstant)
+            {
                 _variable.AddListener(listener);
+            }
             else
             {
-                if (!_listeners.Contains(listener))
-                    _listeners.Add(listener);
+                base.AddListener(listener);
             }
         }
 
-        public virtual void RemoveListener(IGameEventListener listener)
+        public override void RemoveListener(IGameEventListener listener)
         {
             if (_variable != null && !_useConstant)
                 _variable.RemoveListener(listener);
             else
             {
-                if (_listeners.Contains(listener))
-                    _listeners.Remove(listener);
+                base.RemoveListener(listener);
             }
         }
 
-        public virtual void AddListener(Action action)
+        public override void AddListener(Action action)
         {
             if (_variable != null && !_useConstant)
                 _variable.AddListener(action);
             else
             {
-                if(!_actions.Contains(action))
-                    _actions.Add(action);
+                base.AddListener(action);
             }
         }
 
-        public virtual void RemoveListener(Action action)
+        public override void RemoveListener(Action action)
         {
             if (_variable != null && !_useConstant)
                 _variable.RemoveListener(action);
             else
             {
-                if(_actions.Contains(action))
-                    _actions.Remove(action);
+                base.RemoveListener(action);
             }
-        }
-
-        public virtual void RemoveAll()
-        {
-            _listeners.RemoveRange(0, _listeners.Count);
-            _actions.RemoveRange(0, _actions.Count);
         }
     }
 
@@ -125,13 +116,22 @@ namespace ScriptableObjectArchitecture
         public bool RaiseWarning { get; set; } = false;
 
         public BaseLocalReference() : base() {}
-        public BaseLocalReference(TBase baseValue) : base(baseValue) { }
+
+        public BaseLocalReference(TBase baseValue) : base(baseValue)
+        {
+            _useConstant = true;
+            _constantValue = baseValue;
+        }
 
         public void InitializeLocalValue()
         {
             _valueSet = true;
 
-            if (_variable == null) return;
+            if (_variable == null)
+            {
+                _useConstant = true;
+                return;
+            }
 
             _constantValue = _variable.Value;
             _readOnly = _variable.ReadOnly;
@@ -142,18 +142,39 @@ namespace ScriptableObjectArchitecture
             _maxClampValue = _variable.MaxClampValue;
         }
 
+        public override BaseReference CreateCopy()
+        {
+            BaseLocalReference<TBase, TVariable> copy =
+                (BaseLocalReference<TBase, TVariable>)System.Activator.CreateInstance(GetType());
+            copy._useConstant = _useConstant;
+            copy._constantValue = _constantValue;
+            copy._variable = _variable;
+
+            return copy;
+        }
+
+        public override TVariable Variable
+        {
+            get => _variable;
+            set
+            {
+                _useConstant = false;
+                _variable = value;
+                InitializeLocalValue();
+            }
+        }
 
         public override TBase Value
         {
             get
             {
-                if(!_valueSet)
+                if(!_valueSet && !_useConstant)
                     InitializeLocalValue();
                 return _constantValue;
             }
             set
             {
-                if(!_valueSet)
+                if(!_valueSet && !_useConstant)
                     InitializeLocalValue();
 
                 _constantValue = SetValue(value);
@@ -164,6 +185,8 @@ namespace ScriptableObjectArchitecture
         {
             if (_readOnly)
             {
+                if(RaiseWarning)
+                    RaiseReadonlyWarning();
                 return _constantValue;
             }
 

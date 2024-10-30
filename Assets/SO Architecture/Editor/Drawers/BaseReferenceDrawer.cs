@@ -7,7 +7,7 @@ using Type = System.Type;
 namespace ScriptableObjectArchitecture.Editor
 {
     [CustomPropertyDrawer(typeof(BaseReference), true)]
-    public sealed class BaseReferenceDrawer : PropertyDrawer
+    public class BaseReferenceDrawer : PropertyDrawer
     {
         /// <summary>
         /// Options to display in the popup to select constant or variable.
@@ -44,15 +44,15 @@ namespace ScriptableObjectArchitecture.Editor
             useConstant = property.FindPropertyRelative("_useConstant");
             constantValue = property.FindPropertyRelative("_constantValue");
             variable = property.FindPropertyRelative("_variable");
-                        
+
             int oldIndent = ResetIndent();
 
             Rect fieldRect = DrawLabel(position, property, label);
             Rect valueRect = DrawField(position, fieldRect);
             DrawValue(position, valueRect);
-            
+
             EndIndent(oldIndent);
-            
+
             property.serializedObject.ApplyModifiedProperties();
         }
         private bool IsConstantValueMultiline(SerializedProperty property)
@@ -94,7 +94,7 @@ namespace ScriptableObjectArchitecture.Editor
                     position.height = GenericPropertyDrawer.GetHeight(constantValue, ValueType);
 
                     GenericPropertyDrawer.DrawPropertyDrawer(position, constantValue, ValueType);
-                }                
+                }
             }
             else
             {
@@ -150,12 +150,12 @@ namespace ScriptableObjectArchitecture.Editor
 
             return buttonRect;
         }
-        
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             SerializedProperty useConstant = property.FindPropertyRelative(USE_CONSTANT_VALUE_PROPERTY_NAME);
             SerializedProperty constantValue = property.FindPropertyRelative(CONSTANT_VALUE_PROPERTY_NAME);
-            
+
             if (useConstant.boolValue)
             {
                 if (IsConstantValueMultiline(constantValue))
@@ -170,7 +170,7 @@ namespace ScriptableObjectArchitecture.Editor
 
             return EditorGUIUtility.singleLineHeight;
         }
-        
+
         static class Styles
         {
             static Styles()
@@ -183,5 +183,10 @@ namespace ScriptableObjectArchitecture.Editor
 
             public static GUIStyle PopupStyle { get; set; }
         }
+    }
+
+    [CustomPropertyDrawer(typeof(BaseCollectionReference<>), true)]
+    public sealed class BaseCollectionReferenceDrawer : BaseReferenceDrawer
+    {
     }
 }

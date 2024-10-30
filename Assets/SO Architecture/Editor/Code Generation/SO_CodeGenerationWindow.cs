@@ -15,24 +15,31 @@ namespace ScriptableObjectArchitecture.Editor
          * [6] Variable
          *
          * [7] Local Reference (Custom)
-         * /  1  2  3  4  5  6  7
+         * [8] Collection Reference (custom)
+         * [9] Local Collection Reference (custom)
+         * /  1  2  3  4  5  6  7 8 9
          * 1     X        X
          * 2        X
          * 3                 X
          * 4
          * 5
          * 6
+         * 7
+         * 8
+         * 9
          */
 
         private readonly bool[,] _dependencyGraph = new bool[SO_CodeGenerator.TYPE_COUNT, SO_CodeGenerator.TYPE_COUNT]
         {
-            { false, true, false, false, true, false,/**/ false },
-            { false, false, true, false, false, false,/**/ false},
-            { false, false, false, false, false, true,/**/ false},
-            { false, false, false, false, false, false,/**/ false},
-            { false, false, false, false, false, false,/**/ false},
-            { false, false, false, false, false, false,/**/ false},
-            { false, false, false, false, false, true,/**/ false},
+            { false, true, false, false, true, false,/**/ false , false, false},
+            { false, false, true, false, false, false,/**/ false, false, false},
+            { false, false, false, false, false, true,/**/ false, false, false},
+            { false, false, false, false, false, false,/**/ false, false, false},
+            { false, false, false, false, false, false,/**/ false, false, false},
+            { false, false, false, false, false, false,/**/ false, false, false},
+            { false, false, false, false, false, false,/**/ false, false, false},
+            { false, false, false, false, false, false,/**/ false, false, false},
+            { false, false, false, false, false, false,/**/ false, false, false},
         };
 
         private readonly bool[] _states = new bool[SO_CodeGenerator.TYPE_COUNT];
@@ -46,11 +53,13 @@ namespace ScriptableObjectArchitecture.Editor
             "Variable",
 
             "Local Reference",
+            "Collection Reference",
+            "Local Collection Reference"
         };
 
         private readonly bool[] _menuRequirement = new bool[SO_CodeGenerator.TYPE_COUNT]
         {
-            false, true, false, true, false, true, false
+            false, true, false, true, false, true, false, false, false
         };
 
         private int _order;

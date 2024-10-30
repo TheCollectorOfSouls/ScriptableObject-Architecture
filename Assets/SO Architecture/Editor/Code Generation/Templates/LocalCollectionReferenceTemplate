@@ -1,0 +1,12 @@
+﻿using UnityEngine;
+using System.Collections.Generic;
+
+namespace $NAMESPACE$
+{
+	[System.Serializable]
+	public sealed class $TYPE_NAME$LocalCollectionReference : BaseLocalCollectionReference<$TYPE$, $TYPE_NAME$Collection>
+	{
+	    public $TYPE_NAME$LocalCollectionReference() : base() { }
+	    public $TYPE_NAME$LocalCollectionReference(List<$TYPE$> value) : base(value) { }
+	}
+}

@@ -19,7 +19,7 @@ namespace ScriptableObjectArchitecture
         [SerializeField]
         protected TVariable _variable = default(TVariable);
 
-        public TVariable Variable
+        public virtual TVariable Variable
         {
             get => _variable;
             set
@@ -56,15 +56,15 @@ namespace ScriptableObjectArchitecture
             }
         }
 
-        public BaseReference CreateCopy()
-        {
-            BaseReference<TBase, TVariable> copy = (BaseReference<TBase, TVariable>)System.Activator.CreateInstance(GetType());
-            copy._useConstant = _useConstant;
-            copy._constantValue = _constantValue;
-            copy._variable = _variable;
-
-            return copy;
-        }
+        // public BaseReference CreateCopy()
+        // {
+        //     BaseReference<TBase, TVariable> copy = (BaseReference<TBase, TVariable>)System.Activator.CreateInstance(GetType());
+        //     copy._useConstant = _useConstant;
+        //     copy._constantValue = _constantValue;
+        //     copy._variable = _variable;
+        //
+        //     return copy;
+        // }
         // public void AddListener(IGameEventListener listener)
         // {
         //     if (_variable != null)
@@ -92,5 +92,5 @@ namespace ScriptableObjectArchitecture
     }
 
     //Can't get property drawer to work with generic arguments
-    public abstract class BaseReference { }
+    public abstract class BaseReference : ReferenceEventCustom { }
 }
